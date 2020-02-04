@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Http\Controllers \Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ Controller;
 use Illuminate\Http\Request;
+use ArrayRepository;
+use IPostRepository;
 
-class UserController extends Controller{
+class UserController extends Controller
+{
 
-    public function show(Request $request){
-        $this->validate($request, [
-            'name' => 'required'
-        ]);
-        return view('profile', ['name' => $request->input('name')]);
+    public function show(Request $request, IPostRepository $repository)
+    {
+        
+        return $repository->getById(2);
+
     }
 }
