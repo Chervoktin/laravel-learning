@@ -6,11 +6,16 @@ class Post
     private string $text;
     private string $title;
     private int $id;
+    private int $user_id;
 
-    public function __construct(string $title, string $text)
+    public function __construct(?int $id, string $title, string $text, int $user_id)
     {
+        if($id != null){
+            $this->id = $id;
+        }
         $this->text = $text;
         $this->title = $title;
+        $this->user_id = $user_id;
     }
 
     public function setText(string $text): void
@@ -31,5 +36,9 @@ class Post
     }
     public function getTitle(): string{
         return $this->title;
+    }
+    
+    public function getUserId(): int{
+        return $this->user_id;
     }
 }
