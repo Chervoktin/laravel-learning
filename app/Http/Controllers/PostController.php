@@ -21,11 +21,17 @@ class PostController extends Controller
     public function add(Request $request, IPostRepository $repository)
     {
         if (Auth::check()) {
-            $posts = $repository->getAll();
+            $posts = $repository->getAllByUserId(Auth::id());
             return view('addPost', ['posts' => $posts]);
         } else {
             return redirect('login');
         }
+    }
+
+    public function delete(Request $request, int $id, IPostRepository $repository)
+    {
+        $repository->deleteByIdAndUserId($id, Auth::id());
+        return redirect('blog');
     }
 
     public function addComplite(Request $request, IPostRepository $repository)
