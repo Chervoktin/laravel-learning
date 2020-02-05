@@ -11,7 +11,10 @@
     <div>
         <h1> {{ $post->getTitle() }} </h1>
     </div>
-    <div> {{ $post->getText() }}</div>
+    <div>
+        {{ $post->getText() }} 
+        <a href="/blog/delete/{{$post->getId()}}">удалить</a>
+    </div>
     <hr>
     @endforeach
     <form action="" method="post">
