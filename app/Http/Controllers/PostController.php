@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use IPostRepository;
+use Post;
 
 class PostController extends Controller
 {
@@ -39,7 +40,7 @@ class PostController extends Controller
                 'title.required' => 'Необходимо заполнить заголовок',
             ];
             $this->validate($request, $rules, $messages);
-            $post = new Post($request->input('title'), $request->input('text'));
+            $post = new Post(null, $request->input('title'), $request->input('text'), Auth::id());
             $repository->save($post);
             return redirect('blog');
         } else {
