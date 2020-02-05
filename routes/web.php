@@ -21,3 +21,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile', 'UserController@show');
 Route::get('/blog', 'PostController@add');
 Route::post('/blog', 'PostController@addComplite');
+Route::get('/blog/delete/{id}', 'PostController@delete');
