@@ -23,13 +23,26 @@
     <div>
     Фраза: {{ $card->text }}
     </div>
-    <form action="{{ $id }}/word" method="post">
+    <form action=" /card/{{ $id }}" method="post">
+        @csrf
+        
+        @foreach($errors->get('word') as $error)
+        <div>
+        {{ $error }}
+        </div>
+        @endforeach
         <span>слово:</span>
-        <input type="text"></input>
+        <input type="text" name="word"></input>
         <br>
+        @foreach($errors->get('translation') as $error)
+        <div>
+        {{ $error }}
+        </div>
+        @endforeach
         <span>перевод:</span>
-        <input type="text"></input>
+        <input type="text" name="translation"></input>
         <input type="submit" value="добавить слово"></input>
+       
     </form>
 
 
