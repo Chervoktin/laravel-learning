@@ -25,3 +25,4 @@ Route::get('/blog/delete/{id}', 'PostController@delete');
 Route::get('/card', 'CardController@index');
 Route::post('/card', 'CardController@save');
 Route::get('/card/{id}', 'CardController@getCardById');
+Route::post('/card/{id}','CardController@addWordWithTranslation');
