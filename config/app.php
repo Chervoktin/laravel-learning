@@ -163,6 +163,8 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         App\Providers\PostRepositoryProvider::class,
         App\Providers\CardRepositoryServiceProvider::class,
+        App\Providers\TranslationRepositoryServiceProvider::class,
+        App\Providers\WordRepositoryServiceProvider::class,
 
         /*
          * Package Service Providers...
