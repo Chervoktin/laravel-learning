@@ -23,4 +23,13 @@ class ArrayRepository implements IPostRepository
     public function save(Post $post):void{
         dd('save post with text: ' . $post->getText());
     }
+
+    public function deleteByIdAndUserId(int $id, int $user_id): void {
+        
+    }
+
+    public function getAllByUserId(int $id): array {
+        
+    }
+
 }
