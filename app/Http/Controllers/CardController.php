@@ -1,41 +1,78 @@
 <?php
 
+declare (strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use CardNotFoundException;
 use ICardRepository;
 use Illuminate\Http\Request;
-use CardNotFoundException;
+use WordRepository;
+use TranslationRepository;
+use IWordRepository;
+use ITranslationRepository;
 
-class CardController extends Controller
-{
-    public function index(Request $request, ICardRepository $repository)
-    {
+class CardController extends Controller {
+
+    private ICardRepository $_cardRepository;
+    private ITranslationRepository $_translationRepository;
+    private IWordRepository $_wordRepository;
+
+    public function __construct(
+            ICardRepository $cardRepository,
+            ITranslationRepository $translationRepository,
+            IWordRepository $wordRepository) {
+        $this->_cardRepository = $cardRepository;
+        $this->_translationRepository = $translationRepository;
+        $this->_wordRepository = $wordRepository;
+    }
+
+    public function index(Request $request) {
         return view('card');
     }
 
-    public function save(Request $request, ICardRepository $repository)
-    {
+    public function save(Request $request) {
         $rules = ['text' => 'required'];
         $messages = ['text.required' => 'Пустое поле'];
         $this->validate($request, $rules, $messages);
         $card = new \stdClass();
         $card->text = $request->input('text');
-        $id = $repository->save($card);
+        $id = $this->_cardRepository->save($card);
         return redirect('card/' . $id);
-
     }
 
-    public function getCardById(Request $request, $id, ICardRepository $repository)
-    {
+    public function addWordWithTranslation(Request $request, int $id) {
+        $rules = ['word' => 'required',
+            'translation' => 'required'
+        ];
+        $messages = [
+            'word.required' => 'Пустое поле',
+            'translation.required' => 'Пустое поле'
+        ];
+        $this->validate($request, $rules, $messages);
+
+        $word = new \stdClass();
+        $word->word = $request->input('word');
+        
+        $translation = new \stdClass();
+        $translation->translation = $request->input('translation');
+
+        $this->_wordRepository->save($word);
+        $this->_translationRepository->save($translation);
+        return redirect('/card/' . (string) $id);
+    }
+
+    public function getCardById(Request $request, $id) {
         try {
-            $card = $repository->findById($id);
+            $card = $this->_cardRepository->findById($id);
         } catch (CardNotFoundException $e) {
             return abort(404);
         }
-        return view('addCard',[
+        return view('addCard', [
             'id' => $id,
-            'card' => $card
-            ]);
+            'card' => $card,
+        ]);
     }
+
 }
