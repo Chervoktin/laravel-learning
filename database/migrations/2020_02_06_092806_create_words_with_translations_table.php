@@ -26,7 +26,7 @@ class CreateWordsWithTranslationsTable extends Migration
             $table
                 ->foreign('translation_id')
                 ->references('id')
-                ->on('translation')
+                ->on('translations')
                 ->onDelete('cascade');
 
         });
