@@ -22,7 +22,7 @@
         @endforeach
         </div>
         <span>пример:</span>
-        <input type="text"></input>
+        <input type="text" name="text"></input>
         <input type="submit" value="создать"></input>
     </form>
    
