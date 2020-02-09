@@ -23,10 +23,32 @@ class WordRepository implements IWordRepository {
     }
 
     public function isExistsById(int $id): bool {
-        return (bool)DB::select('select id from words where id = ?', [$id])[0];
+        return (bool) DB::select('select id from words where id = ?', [$id])[0];
     }
-    
-     public function isExistsByWord(string $word): bool {
-        return (bool)DB::select('select id from words where word = ?', [$word])[0];
+
+    public function isExistsByWordInCards(string $word, int $card_id): bool {
+        $sql = 'select words.id from cards
+                inner join cards_with_words_with_translations
+                on cards.id = cards_with_words_with_translations.card_id
+                inner join words_with_translations
+                on cards_with_words_with_translations.words_with_translations_id = words_with_translations.id
+                inner join words
+                on words_with_translations.word_id = words.id
+                where (words.word = ?)
+                and (cards.id = ?)';
+        $results = DB::select($sql, [$word, $card_id]);
+        if (isset($results[0])) {
+            return true;
+        } else {
+            return false;
+        }
     }
+
+    public function AddTranslationById($word_id, $translation_id): int {
+        $values = array('word_id' => $word_id,
+            'translation_id' => $translation_id
+        );
+        return DB::table('words_with_translations')->insertGetId($values);
+    }
+
 }
