@@ -69,15 +69,17 @@ class CardController extends Controller {
         return redirect('/card/' . (string) $card_id);
     }
 
-    public function getCardById(Request $request, $id) {
+    public function getCardById(Request $request, int $card_id) {
         try {
-            $card = $this->_cardRepository->findById($id);
+            $card = $this->_cardRepository->findById($card_id);
+            $words = $this->_wordRepository->findAllByCardId($card_id);
         } catch (CardNotFoundException $e) {
             return abort(404);
         }
         return view('addCard', [
-            'id' => $id,
+            'id' => $card_id,
             'card' => $card,
+            'words' => $words,
         ]);
     }
 
