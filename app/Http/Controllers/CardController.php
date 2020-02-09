@@ -42,7 +42,7 @@ class CardController extends Controller {
         return redirect('card/' . $id);
     }
 
-    public function addWordWithTranslation(Request $request, int $id) {
+    public function addWordWithTranslation(Request $request, int $card_id) {
         $rules = ['word' => 'required',
             'translation' => 'required'
         ];
@@ -52,15 +52,21 @@ class CardController extends Controller {
         ];
         $this->validate($request, $rules, $messages);
 
-        $word = new \stdClass();
-        $word->word = $request->input('word');
-        
-        $translation = new \stdClass();
-        $translation->translation = $request->input('translation');
+        if ($this->_wordRepository->isExistsByWordInCards($request->input('word'), $card_id)) {
+            dd("already exist");
+        } else {
+            $word = new \stdClass();
+            $word->word = $request->input('word');
+            $word_id = $this->_wordRepository->save($word);
 
-        $this->_wordRepository->save($word);
-        $this->_translationRepository->save($translation);
-        return redirect('/card/' . (string) $id);
+            $translation = new \stdClass();
+            $translation->translation = $request->input('translation');
+            $translation_id = $this->_translationRepository->save($translation);
+
+            $word_with_translation_id = $this->_wordRepository->AddTranslationById($word_id, $translation_id);
+            $this->_cardRepository->addWordWithTranslation($card_id, $word_with_translation_id);
+        }
+        return redirect('/card/' . (string) $card_id);
     }
 
     public function getCardById(Request $request, $id) {
