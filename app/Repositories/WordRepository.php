@@ -21,6 +21,20 @@ class WordRepository implements IWordRepository {
     public function findById($id) {
         
     }
+    
+    public function findAllByCardId(int $card_id){
+        $sql = 'select words_with_translations.id, words.word, translations.translation from cards
+                inner join cards_with_words_with_translations
+                on cards.id = cards_with_words_with_translations.card_id
+                inner join words_with_translations
+                on cards_with_words_with_translations.words_with_translations_id = words_with_translations.id
+                inner join words
+                on words_with_translations.word_id = words.id
+				inner join translations
+				on words_with_translations.translation_id = translations.id
+                where cards.id = ?';
+        return DB::select($sql, [$card_id]);
+    }
 
     public function isExistsById(int $id): bool {
         return (bool) DB::select('select id from words where id = ?', [$id])[0];
