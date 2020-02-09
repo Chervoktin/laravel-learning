@@ -20,6 +20,12 @@ class CardRepository implements ICardRepository {
         );
     }
 
+    public function addWordWithTranslation($card_id, $word_with_translation_id) {
+        $sql = 'insert into cards_with_words_with_translations 
+                (card_id, words_with_translations_id) values (?, ?)';
+        DB::insert($sql, [$card_id, $word_with_translation_id]);
+    }
+
     public function findById($id) {
         $arr = DB::select('select * from cards where id = ?', [$id]);
         if (isset($arr[0])) {
