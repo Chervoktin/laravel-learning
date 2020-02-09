@@ -8,7 +8,7 @@ interface IWordRepository {
 
     public function isExistsById(int $id): bool;
 
-    public function isExistsByWord(string $word): bool;
+    public function isExistsByWordInCards(string $word, int $card_id): bool;
 
-    public function isExistInCardByCardId(id $card_id): bool;
+    public function AddTranslationById($word_id, $translation_id): int;
 }
