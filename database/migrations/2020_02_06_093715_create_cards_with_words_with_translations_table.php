@@ -19,13 +19,13 @@ class CreateCardsWithWordsWithTranslationsTable extends Migration
             $table->integer('words_with_translations_id')->unsigned();
             $table
                 ->foreign('words_with_translations_id')
-                ->references('words_with_translation')
-                ->on('id');
+                ->references('id')
+                ->on('words_with_translations');
             $table->integer('card_id')->unsigned();
             $table
                     ->foreign('card_id')
-                    ->references('cards')
-                    ->on('id');
+                    ->references('id')
+                    ->on('cards');
         });
     }
 
