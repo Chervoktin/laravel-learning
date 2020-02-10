@@ -83,4 +83,11 @@ class CardController extends Controller {
         ]);
     }
 
+    public function deleteWord(Request $request,
+            int $card_id,
+            int $cards_with_words_id) {
+        $this->_wordRepository->deleteWordFormCardByCardsWithWordsWithTranslationsId($cards_with_words_id);
+        return redirect('/card/' . (string) $card_id);
+    }
+
 }
