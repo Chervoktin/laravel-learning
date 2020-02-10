@@ -57,6 +57,7 @@
         <table class="words">
             @foreach($words as $word)
             <tr>
+                 <td> <a href="/card/{{$id}}/{{ $word->id}}">удалить</a></td>
                 <td>{{ $word->word }}</td>
                 <td>{{ $word->translation }}</td>
             </tr>  
