@@ -22,8 +22,15 @@ class WordRepository implements IWordRepository {
         
     }
     
+    public function deleteWordFormCardByCardsWithWordsWithTranslationsId(int $cards_with_words_with_translations_id){
+        $sql = 'delete from cards_with_words_with_translations
+                where cards_with_words_with_translations.id = ?';
+        $bindings = [$cards_with_words_with_translations_id];
+        DB::delete($sql, $bindings);
+    }
+    
     public function findAllByCardId(int $card_id){
-        $sql = 'select words_with_translations.id, words.word, translations.translation from cards
+        $sql = 'select cards_with_words_with_translations.id, words.word, translations.translation from cards
                 inner join cards_with_words_with_translations
                 on cards.id = cards_with_words_with_translations.card_id
                 inner join words_with_translations
