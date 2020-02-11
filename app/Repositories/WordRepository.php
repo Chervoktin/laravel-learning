@@ -65,7 +65,7 @@ class WordRepository implements IWordRepository {
         }
     }
 
-    public function AddTranslationById($word_id, $translation_id): int {
+    public function addTranslationById($word_id, $translation_id): int {
         $values = array('word_id' => $word_id,
             'translation_id' => $translation_id
         );
