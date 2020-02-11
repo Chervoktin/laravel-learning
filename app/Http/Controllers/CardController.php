@@ -63,7 +63,7 @@ class CardController extends Controller {
             $translation->translation = $request->input('translation');
             $translation_id = $this->_translationRepository->save($translation);
 
-            $word_with_translation_id = $this->_wordRepository->AddTranslationById($word_id, $translation_id);
+            $word_with_translation_id = $this->_wordRepository->addTranslationById($word_id, $translation_id);
             $this->_cardRepository->addWordWithTranslation($card_id, $word_with_translation_id);
         }
         return redirect('/card/' . (string) $card_id);
