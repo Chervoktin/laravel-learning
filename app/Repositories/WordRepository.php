@@ -21,15 +21,15 @@ class WordRepository implements IWordRepository {
     public function findById($id) {
         
     }
-    
-    public function deleteWordFormCardByCardsWithWordsWithTranslationsId(int $cards_with_words_with_translations_id){
+
+    public function deleteWordFormCardByCardsWithWordsWithTranslationsId(int $cards_with_words_with_translations_id) {
         $sql = 'delete from cards_with_words_with_translations
                 where cards_with_words_with_translations.id = ?';
         $bindings = [$cards_with_words_with_translations_id];
         DB::delete($sql, $bindings);
     }
-    
-    public function findAllByCardId(int $card_id){
+
+    public function findAllByCardId(int $card_id) {
         $sql = 'select cards_with_words_with_translations.id, words.word, translations.translation from cards
                 inner join cards_with_words_with_translations
                 on cards.id = cards_with_words_with_translations.card_id
@@ -62,6 +62,17 @@ class WordRepository implements IWordRepository {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public function findWord(string $word) {
+        $sql = 'select * from words where words.word = ?';
+        $bindings = [$word];
+        $words = DB::select($sql, $bindings);
+        if (isset($words[0])) {
+            return $words[0];
+        } else {
+            throw new WordNotFoundException('Word ' . $word . ' not found');
         }
     }
 
