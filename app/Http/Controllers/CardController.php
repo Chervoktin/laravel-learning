@@ -6,10 +6,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use CardNotFoundException;
+use WordNotFoundException;
+use TranslationNotFoundException;
 use ICardRepository;
 use Illuminate\Http\Request;
-use WordRepository;
-use TranslationRepository;
 use IWordRepository;
 use ITranslationRepository;
 
@@ -55,13 +55,23 @@ class CardController extends Controller {
         if ($this->_wordRepository->isExistsByWordInCards($request->input('word'), $card_id)) {
             dd("already exist");
         } else {
-            $word = new \stdClass();
-            $word->word = $request->input('word');
-            $word_id = $this->_wordRepository->save($word);
+            try {
+                $word = $this->_wordRepository->findWord($request->input('word'));
+                $word_id = $word->id;
+            } catch (WordNotFoundException $e) {
+                $word = new \stdClass();
+                $word->word = $request->input('word');
+                $word_id = $this->_wordRepository->save($word);
+            }
 
-            $translation = new \stdClass();
-            $translation->translation = $request->input('translation');
-            $translation_id = $this->_translationRepository->save($translation);
+            try {
+                $translation = $this->_translationRepository->findTranslation($request->input('translation'));
+                $translation_id = $translation->id;
+            } catch (TranslationNotFoundException $e) {
+                $translation = new \stdClass();
+                $translation->translation = $request->input('translation');
+                $translation_id = $this->_translationRepository->save($translation);
+            }
 
             $word_with_translation_id = $this->_wordRepository->addTranslationById($word_id, $translation_id);
             $this->_cardRepository->addWordWithTranslation($card_id, $word_with_translation_id);
