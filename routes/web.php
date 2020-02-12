@@ -27,3 +27,6 @@ Route::post('/card', 'CardController@save');
 Route::get('/card/{id}', 'CardController@getCardById');
 Route::get('/card/{card_id}/{cards_with_words_id}', 'CardController@deleteWord');
 Route::post('/card/{id}','CardController@addWordWithTranslation');
+Route::get('/cards', 'CardController@getAllCards');
+Route::get('/words/{id}', 'CardController@getAllWords');
+Route::get('/test', 'CardController@test');
