@@ -15,4 +15,6 @@ interface IWordRepository {
     public function findAllByCardId(int $card_id);
 
     public function deleteWordFormCardByCardsWithWordsWithTranslationsId(int $cards_with_words_with_translations_id);
+    
+    public function findWord(string $word);
 }
