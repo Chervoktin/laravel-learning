@@ -12,6 +12,7 @@ use ICardRepository;
 use Illuminate\Http\Request;
 use IWordRepository;
 use ITranslationRepository;
+use Illuminate\Support\Facades\DB;
 
 class CardController extends Controller {
 
@@ -98,6 +99,18 @@ class CardController extends Controller {
             int $cards_with_words_id) {
         $this->_wordRepository->deleteWordFormCardByCardsWithWordsWithTranslationsId($cards_with_words_id);
         return redirect('/card/' . (string) $card_id);
+    }
+
+    public function getAllCards(Request $request) {
+        return DB::select('select id, text from cards');
+    }
+
+    public function getAllWords(Request $request, int $card_id) {
+        return array($this->_wordRepository->findAllByCardId($card_id));
+    }
+    
+    public function test(Request $request){
+        return view('test');
     }
 
 }
