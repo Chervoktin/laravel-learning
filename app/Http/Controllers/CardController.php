@@ -108,8 +108,20 @@ class CardController extends Controller {
     public function getAllWords(Request $request, int $card_id) {
         return $this->_wordRepository->findAllByCardId($card_id);
     }
-    
-    public function test(Request $request){
+
+    public function increment(Request $request, int $id) {
+        $sql = "select scores from words_with_translations where id = ?";
+        $bindings = [$id];
+        $scores = (int)DB::select($sql, $bindings)[0]->scores;
+        
+        $sql = "UPDATE words_with_translations SET scores = ? ";
+        $scores += 1;
+        $bindings = [$scores];
+        DB::update($sql, $bindings);
+        return "Успешно";
+    }
+
+    public function test(Request $request) {
         return view('test');
     }
 
