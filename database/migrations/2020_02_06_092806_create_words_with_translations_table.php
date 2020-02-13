@@ -17,6 +17,7 @@ class CreateWordsWithTranslationsTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->integer('word_id')->unsigned();
+            $table->integer('scores')->unsigned()->default(0);
             $table
                 ->foreign('word_id')
                 ->references('id')
