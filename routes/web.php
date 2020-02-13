@@ -30,3 +30,4 @@ Route::post('/card/{id}','CardController@addWordWithTranslation');
 Route::get('/cards', 'CardController@getAllCards');
 Route::get('/words/{id}', 'CardController@getAllWords');
 Route::get('/test', 'CardController@test');
+Route::get('/increment/{id}','CardController@increment');
