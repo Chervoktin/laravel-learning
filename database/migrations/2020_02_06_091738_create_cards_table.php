@@ -15,6 +15,7 @@ class CreateCardsTable extends Migration
     {
         Schema::create('cards', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('scores')->unsigned()->default(0);
             $table->string('text');
             $table->timestamps();
         });
