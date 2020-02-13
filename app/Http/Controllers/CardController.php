@@ -112,8 +112,8 @@ class CardController extends Controller {
     public function increment(Request $request, int $id) {
         $sql = "select scores from words_with_translations where id = ?";
         $bindings = [$id];
-        $scores = (int)DB::select($sql, $bindings)[0]->scores;
-        
+        $scores = (int) DB::select($sql, $bindings)[0]->scores;
+
         $sql = "UPDATE words_with_translations SET scores = ? where id = ?";
         $scores += 1;
         $bindings = [$scores, $id];
@@ -121,20 +121,44 @@ class CardController extends Controller {
         return $scores;
     }
 
-    public function test(Request $request) {
-        return view('test');
+    public function incrementCard(Request $request, int $id) {
+        $sql = "select scores from cards where id = ?";
+        $bindings = [$id];
+        $scores = (int) DB::select($sql, $bindings)[0]->scores;
+
+        $sql = "UPDATE cards SET scores = ? where id = ? ";
+        $scores += 1;
+        $bindings = [$scores, $id];
+        DB::update($sql, $bindings);
+        return $scores;
     }
-    
-    public function decrement(Request $request, int $id){
+
+    public function decrementCard(Request $request, int $id) {
+        $sql = "select scores from cards where id = ?";
+        $bindings = [$id];
+        $scores = (int) DB::select($sql, $bindings)[0]->scores;
+
+        $sql = "UPDATE cards SET scores = ? where id = ? ";
+        $scores -= 1;
+        $bindings = [$scores, $id];
+        DB::update($sql, $bindings);
+        return $scores;
+    }
+
+    public function decrement(Request $request, int $id) {
         $sql = "select scores from words_with_translations where id = ?";
         $bindings = [$id];
-        $scores = (int)DB::select($sql, $bindings)[0]->scores;
-        
+        $scores = (int) DB::select($sql, $bindings)[0]->scores;
+
         $sql = "UPDATE words_with_translations SET scores = ? where id = ? ";
         $scores -= 1;
         $bindings = [$scores, $id];
         DB::update($sql, $bindings);
         return $scores;
+    }
+
+    public function test(Request $request) {
+        return view('test');
     }
 
 }
