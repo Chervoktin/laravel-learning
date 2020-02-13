@@ -114,15 +114,27 @@ class CardController extends Controller {
         $bindings = [$id];
         $scores = (int)DB::select($sql, $bindings)[0]->scores;
         
-        $sql = "UPDATE words_with_translations SET scores = ? ";
+        $sql = "UPDATE words_with_translations SET scores = ? where id = ?";
         $scores += 1;
-        $bindings = [$scores];
+        $bindings = [$scores, $id];
         DB::update($sql, $bindings);
-        return "Успешно";
+        return $scores;
     }
 
     public function test(Request $request) {
         return view('test');
+    }
+    
+    public function decrement(Request $request, int $id){
+        $sql = "select scores from words_with_translations where id = ?";
+        $bindings = [$id];
+        $scores = (int)DB::select($sql, $bindings)[0]->scores;
+        
+        $sql = "UPDATE words_with_translations SET scores = ? where id = ? ";
+        $scores -= 1;
+        $bindings = [$scores, $id];
+        DB::update($sql, $bindings);
+        return $scores;
     }
 
 }
