@@ -106,7 +106,7 @@ class CardController extends Controller {
     }
 
     public function getAllWords(Request $request, int $card_id) {
-        return array($this->_wordRepository->findAllByCardId($card_id));
+        return $this->_wordRepository->findAllByCardId($card_id);
     }
     
     public function test(Request $request){
