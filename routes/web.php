@@ -31,3 +31,4 @@ Route::get('/cards', 'CardController@getAllCards');
 Route::get('/words/{id}', 'CardController@getAllWords');
 Route::get('/test', 'CardController@test');
 Route::get('/increment/{id}','CardController@increment');
+Route::get('/decrement/{id}','CardController@decrement');
