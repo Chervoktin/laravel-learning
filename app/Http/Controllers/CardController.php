@@ -73,8 +73,14 @@ class CardController extends Controller {
                 $translation->translation = $request->input('translation');
                 $translation_id = $this->_translationRepository->save($translation);
             }
+            try {
+                $word_with_translation = $this->_wordRepository->findWordWithTranslationById(
+                        $word_id, $translation_id);
+                $word_with_translation_id = $word_with_translation->id;
+            } catch (WordNotFoundException $ex) {
+                $word_with_translation_id = $this->_wordRepository->addTranslationById($word_id, $translation_id);
+            }
 
-            $word_with_translation_id = $this->_wordRepository->addTranslationById($word_id, $translation_id);
             $this->_cardRepository->addWordWithTranslation($card_id, $word_with_translation_id);
         }
         return redirect('/card/' . (string) $card_id);
@@ -102,7 +108,7 @@ class CardController extends Controller {
     }
 
     public function getAllCards(Request $request) {
-        return DB::select('select id, text from cards');
+        return DB::select('select id, text, scores from cards');
     }
 
     public function getAllWords(Request $request, int $card_id) {
@@ -110,15 +116,22 @@ class CardController extends Controller {
     }
 
     public function increment(Request $request, int $id) {
-        $sql = "select scores from words_with_translations where id = ?";
+        $sql = "UPDATE words_with_translations SET scores = scores + 1 where id = ?";
         $bindings = [$id];
-        $scores = (int) DB::select($sql, $bindings)[0]->scores;
-
-        $sql = "UPDATE words_with_translations SET scores = ? where id = ?";
-        $scores += 1;
-        $bindings = [$scores, $id];
         DB::update($sql, $bindings);
-        return $scores;
+
+        $sql = "select cards.id from cards
+                inner join cards_with_words_with_translations
+                on cards.id = cards_with_words_with_translations.card_id
+                inner join words_with_translations
+                on cards_with_words_with_translations.words_with_translations_id = words_with_translations.id
+                where words_with_translations.id = ?";
+        $cards = DB::select($sql, $bindings);
+
+        $sql = "UPDATE cards SET scores = scores + 1 where id = ?";
+        foreach ($cards as $card) {
+            DB::update($sql, [$card->id]);
+        }
     }
 
     public function incrementCard(Request $request, int $id) {
