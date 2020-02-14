@@ -21,6 +21,18 @@ class WordRepository implements IWordRepository {
     public function findById($id) {
         
     }
+    
+    public function findWordWithTranslationById($word_id, $translation_id){
+        $result = DB::select("select id from words_with_translations
+                    where word_id = ? and
+                    translation_id = ?", [$word_id, $translation_id]);
+        if(isset($result[0])){
+            return $result[0];
+        }else{
+            throw new WordNotFoundException("not found");
+        }
+                
+    }
 
     public function deleteWordFormCardByCardsWithWordsWithTranslationsId(int $cards_with_words_with_translations_id) {
         $sql = 'delete from cards_with_words_with_translations
@@ -30,7 +42,7 @@ class WordRepository implements IWordRepository {
     }
 
     public function findAllByCardId(int $card_id) {
-        $sql = 'select cards_with_words_with_translations.id, words.word, translations.translation from cards
+        $sql = 'select words_with_translations.id, words.word, translations.translation from cards
                 inner join cards_with_words_with_translations
                 on cards.id = cards_with_words_with_translations.card_id
                 inner join words_with_translations
