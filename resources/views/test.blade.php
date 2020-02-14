@@ -62,10 +62,9 @@
             }
             if (word.translation == event.target.value) {
                 event.target.classList.add("complite");
-                let response = await fetch("/increment/" + word.id);
-                console.log(word.word + " : " + await response.text());
-                response = await fetch("/incrementcard/" + card.id);
-                console.log(card.text + " : " + await response.text());
+                let url = "/increment/" + word.id;
+                console.log(url);
+                let response = await fetch(url);
                 window.countOfRightWords += 1;
                 if (window.countOfRightWords == words.length) {
                     window.countOfRightWords = 0;
