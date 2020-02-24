@@ -39,6 +39,8 @@ class CardController extends Controller {
         $this->validate($request, $rules, $messages);
         $card = new \stdClass();
         $card->text = $request->input('text');
+        $path = $request->file('file')->store('file');
+        
         $id = $this->_cardRepository->save($card);
         return redirect('card/' . $id);
     }
