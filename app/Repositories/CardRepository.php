@@ -16,7 +16,10 @@ class CardRepository implements ICardRepository {
 
     public function save($card) {
         return DB::table('cards')->insertGetId(
-                        array('text' => $card->text)
+                        array('text' => $card->text,
+                            'url' => $card->url
+                
+                )
         );
     }
 
