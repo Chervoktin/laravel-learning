@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use IWordRepository;
 use ITranslationRepository;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class CardController extends Controller {
 
@@ -37,10 +38,11 @@ class CardController extends Controller {
         $rules = ['text' => 'required'];
         $messages = ['text.required' => 'Пустое поле'];
         $this->validate($request, $rules, $messages);
+        
         $card = new \stdClass();
         $card->text = $request->input('text');
-        $path = $request->file('file')->store('file');
-        
+        $card->url = Storage::url(basename($request->file('file')->store('public')));
+         
         $id = $this->_cardRepository->save($card);
         return redirect('card/' . $id);
     }
@@ -95,10 +97,13 @@ class CardController extends Controller {
         } catch (CardNotFoundException $e) {
             return abort(404);
         }
+   
+
         return view('addCard', [
             'id' => $card_id,
             'card' => $card,
             'words' => $words,
+            'url' => asset("storage/".$card->url)
         ]);
     }
 
