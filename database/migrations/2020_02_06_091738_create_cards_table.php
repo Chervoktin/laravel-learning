@@ -17,6 +17,7 @@ class CreateCardsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('scores')->unsigned()->default(0);
             $table->string('text');
+            $table->string('url');
             $table->timestamps();
         });
     }
