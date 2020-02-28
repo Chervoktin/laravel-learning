@@ -41,7 +41,7 @@ class CardController extends Controller {
         
         $card = new \stdClass();
         $card->text = $request->input('text');
-        $card->url = Storage::url(basename($request->file('file')->store('public')));
+        $card->url = basename($request->file('file')->store('public'));
          
         $id = $this->_cardRepository->save($card);
         return redirect('card/' . $id);
@@ -103,7 +103,7 @@ class CardController extends Controller {
             'id' => $card_id,
             'card' => $card,
             'words' => $words,
-            'url' => asset("storage/".$card->url)
+            'url' => Storage::url($card->url)
         ]);
     }
 
@@ -115,7 +115,7 @@ class CardController extends Controller {
     }
 
     public function getAllCards(Request $request) {
-        return DB::select('select id, text, scores from cards');
+        return DB::select('select id, url, text, scores from cards');
     }
 
     public function getAllWords(Request $request, int $card_id) {
