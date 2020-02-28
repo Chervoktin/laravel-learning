@@ -35,7 +35,7 @@
             Фраза: {{ $card->text }}
         </div>
         <div>
-            <video src="{{ $url }}"> controls></video> 
+            <video src="{{ $url }}" controls="controls"></video> 
         </div>
         <form action=" /card/{{ $id }}" method="post">
             @csrf
