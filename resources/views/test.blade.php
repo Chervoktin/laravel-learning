@@ -26,8 +26,9 @@
             return json;
         };
 
-        function createTest(words) {
-            for (let i = 0; i != words.length; i++) {
+        function createTest(card) {
+            let words = card.words;
+            for (let i = 0; i != words.length; i++) {   
                 let word = words[i];
                 let input = document.createElement('input');
                 let p = document.createElement('span');
@@ -39,13 +40,13 @@
                 div.append(p);
                 div.append(input);
                 div.append(br);
-            }
+            } 
         }
 
         function input(event) {
             let card = window.cards[window.currentCardPosition - 1];
             if (event.target.value == card.text) {
-                createTest(card.words);
+                createTest(card);
                 event.target.classList.add("complite");
             }
         }
@@ -87,6 +88,9 @@
             let positionDiv = document.getElementById("position");
             positionDiv.innerHTML = window.currentCardPosition + "/" + window.AllCards;
             document.getElementById("text").innerHTML = cards[window.currentCardPosition - 1].text;
+
+            let video =  document.getElementById("video");
+            video.setAttribute("src", "/storage/" + cards[window.currentCardPosition-1].url);
         });
 
         async function next() {
@@ -98,6 +102,8 @@
             let positionDiv = document.getElementById("position");
             positionDiv.innerHTML = window.currentCardPosition + "/" + window.AllCards;
             document.getElementById("text").innerHTML = window.cards[window.currentCardPosition - 1].text;
+            let video =  document.getElementById("video");
+            video.setAttribute("src", "/storage/" + window.cards[window.currentCardPosition - 1].url);
         }
         async function prev() {
             window.currentCardPosition -= 1;
@@ -118,12 +124,16 @@
 
     <div id="text">
     </div>
+   <br>
+    <video id="video" controls="controls"></video> 
+    <br>
     <input type="text" oninput="input(event)"></input>
     <div id="position"></div>
     <button onclick="prev()" id="prev"> prev </button> <button onclick="next()" id="next"> next </button>
     <div id="test">
 
     </div>
+    <br>
 </body>
 
 </html>
